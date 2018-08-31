@@ -1,3 +1,5 @@
+#define _POSIX_C_SOURCE 2
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -7,6 +9,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 #include "types.h"
 #include "const.h"
 #include "util.h"
@@ -36,6 +39,7 @@ int parallel_binsearch() {
 }
  
 int main(int argc, char** argv) {
+
     /* TODO: move this time measurement to right before the execution of each binsearch algorithms
      * in your experiment code. It now stands here just for demonstrating time measurement. */
     clock_t cbegin = clock();
@@ -46,9 +50,63 @@ int main(int argc, char** argv) {
     printf("[binsearch] Number of cores available: '%ld'\n",
            sysconf(_SC_NPROCESSORS_ONLN));
 
-    /* TODO: parse arguments with getopt */
+    /* TODO: parse arguments with g etopt */
+    int Tvalue = 0;
+	int Evalue = 0;
+	int Pvalue = 0;
+	int index;
+	int c;
+
+	opterr = 0;
+
+
+	while ((c = getopt (argc, argv, "E:T:P:")) != -1)
+		switch (c){
+			case 'E':
+				Evalue = atoi(optarg);
+				break;
+			case 'T':
+				Tvalue = atoi(optarg);
+				break;
+			case 'P':
+				Pvalue = atoi(optarg);
+				break;
+			case '?':
+				if (optopt == 'P' || optopt == 'T' || optopt == 'E')
+				  fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+				else if (isprint(optopt))
+				  fprintf (stderr, "Unknown option `-%c'.\n", optopt);
+				else
+				  fprintf (stderr,
+					   "Unknown option character `\\x%x'.\n",
+					   optopt);
+				return 1;
+			default:
+				abort ();
+		}
+
+
+	printf ("E = %d, T = %d, P = %d\n",
+	  Evalue, Tvalue, Pvalue);
+
+	for (index = optind; index < argc; index++)
+		printf ("Non-option argument %s\n", argv[index]);
+    
 
     /* TODO: start datagen here as a child process. */
+	pid_t pid;
+	pid = fork();
+	if (pid == -1){   
+		fprintf(stderr, "Error en fork\n");
+		exit(EXIT_FAILURE);
+	}
+	if (pid == 0){
+		printf("%s\n", "Soy el hijo" );
+		execlp("./datagen","./datagen",NULL);
+	}
+	else{
+		printf("%s\n", "Soy el padre" );
+    }
 
     /* TODO: implement code for your experiments using data provided by datagen and your
      * serial and parallel versions of binsearch.
