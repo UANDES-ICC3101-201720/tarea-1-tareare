@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "const.h": "c",
+        "stdio.h": "c",
+        "pthread.h": "c"
+    }
+}
