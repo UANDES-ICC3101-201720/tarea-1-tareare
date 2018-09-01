@@ -1,0 +1,22 @@
+Analisis de resultados:
+
+Al analizar los datos con T=4, T=5 y T=6 y variando el P entre el valor medio 
+el inicial y el final lo que se observo fue lo siguiente: el valor optimo 
+para el serial binsearch es cuando P es el valor medio, mientras que para el paralelo 
+cuando P es el primer valor corre mas rapido.
+y al aumentar el t tanto el serial como el paralelo va subiendo el tiempo pero 
+el serial de manera mas brusca.
+
+Conclucion:
+
+Lo que see puede concluir es que al tener un array mas largo el tiempo de ordenar
+tambien sera mas largo, y que el serial binsearch es mas rapido que el paralelo.
+
+Problemas Encontrados:
+
+nuestro programa genero core dumped al usar t>6 esto creemos que es debido al uso 
+de una maquina virtual la cual restringe la cantidad de nucleos que nuestro cpu
+posee.
+
+Raimundo Gonzalez
+Enrique Riveros
